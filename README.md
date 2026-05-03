@@ -5,7 +5,7 @@ Built with **Spring Boot 3.4.5 · MongoDB · JWT Authentication · Docker**.
 
 **CPSC 449 — Web Backend Engineering | Cal State Fullerton**  
 **Team Members:**
-- Ann Nguyen — CWID: [YOUR_CWID]
+- An Nguyen — CWID: 
 
 ---
 
