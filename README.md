@@ -92,14 +92,14 @@ The app will be available at `http://localhost:8080`.
 
 ## 🧪 Phase 2: Testing Everything (Postman Walkthrough)
 
-Open Postman and perform these **5 mandatory tests** in order:
+Open Postman and perform these **9 mandatory tests** in order:
 
 ### 1. Register a New User (POST)
 *   **URL**: `http://localhost:8080/api/auth/register`
 *   **Method**: `POST`
 *   **Body** -> `raw` -> `JSON`:
     ```json
-    { "username": "tester", "email": "test@test.com", "password": "password123" }
+    { "username": "globetrotter", "email": "world@tour.com", "password": "password123" }
     ```
 *   **Result**: Copy the `"token"` from the response.
 
@@ -108,7 +108,7 @@ Open Postman and perform these **5 mandatory tests** in order:
 *   **Method**: `POST`
 *   **Body** -> `JSON`:
     ```json
-    { "email": "test@test.com", "password": "password123" }
+    { "email": "world@tour.com", "password": "password123" }
     ```
 *   **Result**: You receive the same JWT token.
 
@@ -128,10 +128,38 @@ Open Postman and perform these **5 mandatory tests** in order:
 *   **Auth Tab**: `Bearer Token` (should still be active).
 *   **Expect**: `200 OK`. You see a list containing your trip.
 
-### 5. Update/Delete (Protected)
-*   **Update**: `PUT /api/trips/<TRIP_ID>` with new JSON body.
-*   **Delete**: `DELETE /api/trips/<TRIP_ID>`.
-*   **Expect**: `200 OK`.
+### 5. Get a Single Trip (GET - Protected)
+*   **URL**: `http://localhost:8080/api/trips/<TRIP_ID>`
+*   **Method**: `GET`
+*   **Auth Tab**: `Bearer Token`.
+*   **Expect**: `200 OK`. You see the full JSON for just that specific trip.
+
+### 6. Update a Trip (PUT - Protected)
+*   **URL**: `http://localhost:8080/api/trips/<TRIP_ID>`
+*   **Method**: `PUT`
+*   **Auth Tab**: `Bearer Token`.
+*   **Body** -> `JSON`:
+    ```json
+    { "destination": "Tokyo, Japan", "startDate": "2025-10-01", "endDate": "2025-10-10", "notes": "Cherry blossoms and sushi!", "rating": 5 }
+    ```
+*   **Expect**: `200 OK`. The trip details are updated to Tokyo in MongoDB.
+
+### 7. Delete a Trip (DELETE - Protected)
+*   **URL**: `http://localhost:8080/api/trips/<TRIP_ID>`
+*   **Method**: `DELETE`
+*   **Auth Tab**: `Bearer Token`.
+*   **Expect**: `200 OK` with a success message.
+*   **Verification**: Try to `GET /api/trips` again; the list should be empty.
+
+### 8. Data Isolation Check (The "403 Test")
+*   Create a second user (Register as `tester2`).
+*   Try to `DELETE` or `PUT` the first user's Trip ID using the second user's token.
+*   **Expect**: `403 Forbidden`. This proves your data isolation logic is working.
+
+### 9. Unauthorized Access (The "401 Test")
+*   Try to `GET /api/trips` but remove the Bearer Token from the Auth tab.
+*   **Expect**: `401 Unauthorized`. This proves your security filter is protecting the routes.
+
 
 ---
 
